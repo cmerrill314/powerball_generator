@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Powerball Number Generator</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
+  <meta name="theme-color" content="#d32f2f">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 750px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: #f9f9f9;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      margin: 0.5rem 0 1.5rem;
+    }
+    .circle-row {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .circle-row .ball {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      border: 2px solid #333;
+    }
+    .circle-row .white-ball {
+      background: white;
+      color: black;
+    }
+    .circle-row .red-ball {
+      background: #d32f2f;
+      color: white;
+    }
+    .form-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .form-row label {
+      flex: 1;
+    }
+    input {
+      padding: 0.3rem;
+      width: 100%;
+    }
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      justify-content: center;
+    }
+    button {
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+      font-size: 1rem;
+      border-radius: 4px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .primary-btn {
+      background: linear-gradient(45deg, #ff1744, #d50000);
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+      padding: 1rem 1.8rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .primary-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+    }
+    .secondary-btn {
+      background: white;
+      color: black;
+      border: 2px solid black;
+    }
+    .secondary-btn:hover {
+      background: #f0f0f0;
+    }
+    #installBtn {
+      display: none;
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+      padding: 0.5rem 1rem;
+    }
+    .range-settings, .about-section {
+      display: none; /* Hidden by default */
+      margin-top: 1rem;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+    .ticket {
+      margin: 0.4rem 0;
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .ticket .ball {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.9rem;
+      border: 1px solid #333;
+    }
+    .ticket .white-ball {
+      background: white;
+      color: black;
+    }
+    .ticket .red-ball {
+      background: #d32f2f;
+      color: white;
+    }
+    h2 {
+      margin-top: 1.5rem;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 0.3rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Decorative Powerball Row -->
+  <div class="circle-row">
+    <div class="ball white-ball"></div>
+    <div class="ball white-ball"></div>
+    <div class="ball white-ball"></div>
+    <div class="ball white-ball"></div>
+    <div class="ball white-ball"></div>
+    <div class="ball red-ball"></div>
+  </div>
+
+  <h1>Powerball Number Generator</h1>
+
+  <div class="form-row">
+    <label>
+      # Tickets:
+      <input type="number" id="tickets" value="1" min="1" max="50" />
+    </label>
+	<label>
+      # Players:
+      <input type="number" id="players" value="1" min="1" max="20" />
+    </label>
+  </div>
+
+  <div class="buttons">
+    <button class="primary-btn" onclick="generateTickets()">Generate Tickets</button>
+    <button class="secondary-btn" onclick="toggleRangeSettings()">Range Settings</button>
+    <button class="secondary-btn" onclick="toggleAbout()">About</button>
+    <button class="secondary-btn" onclick="downloadPDF()">Download as PDF</button>
+    <button id="installBtn" class="secondary-btn">Install App</button>
+  </div>
+
+  <div class="range-settings" id="rangeSettings">
+    <h3>Optional Custom Ranges</h3>
+    <p>(Leave blank to use official Powerball ranges: 1–69 for first 5, 1–26 for Powerball)</p>
+    <label>First Ball Range:</label>
+    <input type="text" id="range1" placeholder="default 1-69" />
+    <label>Second Ball Range:</label>
+    <input type="text" id="range2" placeholder="default 1-69" />
+    <label>Third Ball Range:</label>
+    <input type="text" id="range3" placeholder="default 1-69" />
+    <label>Fourth Ball Range:</label>
+    <input type="text" id="range4" placeholder="default 1-69" />
+    <label>Fifth Ball Range:</label>
+    <input type="text" id="range5" placeholder="default 1-69" />
+    <label>Powerball Range:</label>
+    <input type="text" id="rangePower" placeholder="default 1-26" />
+  </div>
+
+  <div class="about-section" id="aboutSection">
+    <h3>About</h3>
+    <p>The first five numbers default to the ranges commonly shared on TikTok accounts such as @SuperstarTrading. You can click the <strong>Range Settings</strong> button to enter your own custom ranges, or use the official 1–69 range. This site is not affiliated with @SuperstarTrading in any way; it was simply created as a convenient tool for generating values using this method.</p>
+
+    <p>Powerball values are designed to provide as many unique results as possible. For example, if you generate 26 tickets, you should see all 26 possible Powerball values.</p>
+
+    <p>Please keep in mind that statistically, <strong>all number combinations are equally likely to occur</strong>. The numbers generated here do not increase your likelihood of winning, regardless of the ranges you choose.</p>
+
+    <h3>Disclaimer</h3>
+    <p>This website is not affiliated with or endorsed by the Multi-State Lottery Association (MUSL) or any state or national lottery. The information provided is intended solely for the use of players and prospective players of Powerball lottery games in participating states and countries.</p>
+
+    <p>The content on this website is provided free of charge. While we make every effort to ensure accuracy, errors or omissions may occur. Any reliance you place on the information contained here is entirely at your own risk, and we do not accept liability for any losses incurred as a result of missing or incorrect information.</p>
+
+    <p>The results published on this site do not constitute proof of winning. You should always verify winning numbers and tickets with the official state lottery provider.</p>
+
+    <p>All trademarks remain the property of their respective owners and are used here for informational purposes only.</p>
+  </div>
+
+  <div id="results"></div>
+
+  <!-- jsPDF for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script>
+    // Toggle custom range visibility
+    function toggleRangeSettings() {
+      const section = document.getElementById("rangeSettings");
+      section.style.display = section.style.display === "none" || section.style.display === "" ? "block" : "none";
+    }
+
+    // Toggle about section visibility
+    function toggleAbout() {
+      const section = document.getElementById("aboutSection");
+      section.style.display = section.style.display === "none" || section.style.display === "" ? "block" : "none";
+    }
+
+    // --- Utility functions ---
+    function parseRange(input, fallbackMin, fallbackMax) {
+      if (!input) return {min: fallbackMin, max: fallbackMax};
+      const parts = input.split('-').map(n => parseInt(n.trim(), 10));
+      if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+        return {min: parts[0], max: parts[1]};
+      }
+      return {min: fallbackMin, max: fallbackMax};
+    }
+
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function generateTicket(ranges) {
+      const firstFive = new Set();
+      for (let i = 0; i < 5; i++) {
+        const {min, max} = ranges[i];
+        let num;
+        do {
+          num = getRandomInt(min, max);
+        } while (firstFive.has(num));
+        firstFive.add(num);
+      }
+      const balls = Array.from(firstFive).sort((a, b) => a - b);
+      return {balls};
+    }
+
+    // --- Main ticket generation ---
+    function generateTickets() {
+      const numPlayers = Math.min(Math.max(parseInt(document.getElementById("players").value, 10) || 1, 1), 30);
+      const ticketsPerPlayer = Math.min(Math.max(parseInt(document.getElementById("tickets").value, 10) || 1, 1), 104);
+
+      const ranges = [
+        parseRange(document.getElementById("range1").value, 1, 69),
+        parseRange(document.getElementById("range2").value, 1, 69),
+        parseRange(document.getElementById("range3").value, 1, 69),
+        parseRange(document.getElementById("range4").value, 1, 69),
+        parseRange(document.getElementById("range5").value, 1, 69),
+        parseRange(document.getElementById("rangePower").value, 1, 26)
+      ];
+
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "";
+
+      // Track Powerball usage across all tickets
+      const powerballUsage = {};
+      for (let i = ranges[5].min; i <= ranges[5].max; i++) {
+        powerballUsage[i] = 0;
+      }
+
+      function getBalancedPowerball() {
+        const minUsage = Math.min(...Object.values(powerballUsage));
+        const candidates = Object.keys(powerballUsage)
+          .filter(num => powerballUsage[num] === minUsage)
+          .map(n => parseInt(n, 10));
+        const chosen = candidates[Math.floor(Math.random() * candidates.length)];
+        powerballUsage[chosen]++;
+        return chosen;
+      }
+
+      for (let p = 1; p <= numPlayers; p++) {
+        const playerDiv = document.createElement("div");
+        playerDiv.style.marginTop = "1.5rem";
+
+        const header = document.createElement("h2");
+        header.textContent = `Player ${p}`;
+        playerDiv.appendChild(header);
+
+        for (let i = 0; i < ticketsPerPlayer; i++) {
+          const { balls } = generateTicket(ranges);
+          const powerball = getBalancedPowerball();
+
+          const ticketDiv = document.createElement("div");
+          ticketDiv.className = "ticket";
+
+          balls.forEach(n => {
+            const ballDiv = document.createElement("div");
+            ballDiv.className = "ball white-ball";
+            ballDiv.textContent = n;
+            ticketDiv.appendChild(ballDiv);
+          });
+
+          const powerDiv = document.createElement("div");
+          powerDiv.className = "ball red-ball";
+          powerDiv.textContent = powerball;
+          ticketDiv.appendChild(powerDiv);
+
+          playerDiv.appendChild(ticketDiv);
+        }
+
+        resultsDiv.appendChild(playerDiv);
+      }
+    }
+
+    // --- PDF Export ---
+    async function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      let y = 20;
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(16);
+      doc.text("Powerball Tickets", 105, 10, { align: "center" });
+      doc.setFontSize(12);
+
+      const resultsDiv = document.getElementById("results");
+      if (!resultsDiv.innerText.trim()) {
+        alert("Please generate tickets first.");
+        return;
+      }
+
+      const lines = resultsDiv.innerText.split("\n");
+      for (const line of lines) {
+        if (y > 280) {
+          doc.addPage();
+          y = 20;
+        }
+        doc.text(line, 20, y);
+        y += 8;
+      }
+
+      doc.save("powerball-tickets.pdf");
+    }
+
+    // --- PWA Service Worker Registration ---
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("service-worker.js");
+      });
+    }
+
+    // --- PWA Install Prompt Handling ---
+    let deferredPrompt;
+    const installBtn = document.getElementById("installBtn");
+
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = "inline-block";
+    });
+
+    installBtn.addEventListener("click", async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === "accepted") {
+          installBtn.style.display = "none";
+        }
+        deferredPrompt = null;
+      }
+    });
+  </script>
+</body>
+</html>
