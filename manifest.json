@@ -1,6 +1,6 @@
 {
-  "name": "Powerball Generator",
-  "short_name": "Powerball",
+  "name": "Powerball Number Generator",
+  "short_name": "PB Number Gen",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -19,4 +19,5 @@
     }
   ]
 }
+
 
