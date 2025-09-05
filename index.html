@@ -173,15 +173,15 @@
   <div class="range-settings" id="rangeSettings">
     <h3>Optional Custom Ranges</h3>
     <label>First Ball Range:</label>
-    <input type="text" id="range1" placeholder="default 1-69" />
+    <input type="text" id="range1" placeholder="default 1-10" />
     <label>Second Ball Range:</label>
-    <input type="text" id="range2" placeholder="default 1-69" />
+    <input type="text" id="range2" placeholder="default 10-35" />
     <label>Third Ball Range:</label>
-    <input type="text" id="range3" placeholder="default 1-69" />
+    <input type="text" id="range3" placeholder="default 20-45" />
     <label>Fourth Ball Range:</label>
-    <input type="text" id="range4" placeholder="default 1-69" />
+    <input type="text" id="range4" placeholder="default 40-60" />
     <label>Fifth Ball Range:</label>
-    <input type="text" id="range5" placeholder="default 1-69" />
+    <input type="text" id="range5" placeholder="default 60-69" />
     <label>Powerball Range:</label>
     <input type="text" id="rangePower" placeholder="default 1-26" />
   </div>
@@ -257,9 +257,9 @@
 
       const ranges = [
         parseRange(document.getElementById("range1").value, 1, 10),
-        parseRange(document.getElementById("range2").value, 10, 30),
-        parseRange(document.getElementById("range3").value, 30, 40),
-        parseRange(document.getElementById("range4").value, 45, 60),
+        parseRange(document.getElementById("range2").value, 10, 35),
+        parseRange(document.getElementById("range3").value, 20, 45),
+        parseRange(document.getElementById("range4").value, 40, 60),
         parseRange(document.getElementById("range5").value, 60, 69),
         parseRange(document.getElementById("rangePower").value, 1, 26)
       ];
@@ -377,4 +377,5 @@
   </script>
 </body>
 </html>
+
 
