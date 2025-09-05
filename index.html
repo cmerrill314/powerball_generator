@@ -172,7 +172,6 @@
 
   <div class="range-settings" id="rangeSettings">
     <h3>Optional Custom Ranges</h3>
-    <p>(Leave blank to use official Powerball ranges: 1–69 for first 5, 1–26 for Powerball)</p>
     <label>First Ball Range:</label>
     <input type="text" id="range1" placeholder="default 1-69" />
     <label>Second Ball Range:</label>
@@ -257,11 +256,11 @@
       const ticketsPerPlayer = Math.min(Math.max(parseInt(document.getElementById("tickets").value, 10) || 1, 1), 104);
 
       const ranges = [
-        parseRange(document.getElementById("range1").value, 1, 69),
-        parseRange(document.getElementById("range2").value, 1, 69),
-        parseRange(document.getElementById("range3").value, 1, 69),
-        parseRange(document.getElementById("range4").value, 1, 69),
-        parseRange(document.getElementById("range5").value, 1, 69),
+        parseRange(document.getElementById("range1").value, 1, 10),
+        parseRange(document.getElementById("range2").value, 10, 30),
+        parseRange(document.getElementById("range3").value, 30, 40),
+        parseRange(document.getElementById("range4").value, 45, 60),
+        parseRange(document.getElementById("range5").value, 60, 69),
         parseRange(document.getElementById("rangePower").value, 1, 26)
       ];
 
@@ -378,3 +377,4 @@
   </script>
 </body>
 </html>
+
